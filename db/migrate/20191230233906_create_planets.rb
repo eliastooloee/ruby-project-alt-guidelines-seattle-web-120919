@@ -3,7 +3,7 @@ class CreatePlanets < ActiveRecord::Migration[5.2]
     create_table :planets do |t|
       t.string :name
       t.float :radius
-      t.float :surface_gravity
+      t.float :mass
       t.float :atmospheric_pressure
       t.boolean :inhabited
     end
