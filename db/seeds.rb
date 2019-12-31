@@ -5,7 +5,9 @@ require 'faker'
 end
 
 10.times do
-    Starship.create(name: Faker::Space.launch_vehicle, crew: Faker::Number.within(range: 1..10, mass: Faker::Number.positive, thrust: Faker::Number.positive)
+    Starship.create(name: Faker::Space.launch_vehicle, crew: Faker::Number.within(range: 1..10), mass: Faker::Number.positive, thrust: Faker::Number.positive)
 end
 
+10.times do
 Landing.create(starship_id: Starship.all.sample.id, planet_id: Planet.all.sample.id)
+end
