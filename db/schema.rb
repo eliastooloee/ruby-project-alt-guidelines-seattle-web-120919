@@ -13,14 +13,24 @@
 ActiveRecord::Schema.define(version: 2019_12_30_233926) do
 
   create_table "landings", force: :cascade do |t|
+    t.integer "starship_id"
+    t.integer "planet_id"
   end
 
   create_table "planets", force: :cascade do |t|
     t.string "name"
+    t.float "radius"
+    t.float "surface_gravity"
+    t.float "atmospheric_pressure"
+    t.boolean "inhabited"
   end
 
   create_table "starships", force: :cascade do |t|
     t.string "name"
+    t.string "class"
+    t.integer "crew"
+    t.integer "mass"
+    t.float "thrust"
   end
 
 end
