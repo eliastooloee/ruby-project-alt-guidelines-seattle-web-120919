@@ -19,17 +19,12 @@ ActiveRecord::Schema.define(version: 2019_12_30_233926) do
 
   create_table "planets", force: :cascade do |t|
     t.string "name"
-    t.float "radius"
-    t.float "mass"
-    t.float "atmospheric_pressure"
     t.boolean "inhabited"
   end
 
   create_table "starships", force: :cascade do |t|
     t.string "name"
     t.integer "crew"
-    t.float "mass"
-    t.float "thrust"
   end
 
 end
