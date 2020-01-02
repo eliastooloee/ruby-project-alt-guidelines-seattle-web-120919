@@ -9,7 +9,7 @@ class CommandLineInterface
     end
 
     def greet
-        puts "Welcome to StarLog, the most comprehensive database of interplanetary arrivals and departures."
+        puts "Welcome to StarLogger, the most comprehensive database of interplanetary arrivals and departures."
     end
 
     def menu
@@ -65,29 +65,35 @@ class CommandLineInterface
         Planet.all.each do |planet|
             puts planet.name
         end
+        menu
+        options
     end
     
     def show_all_ships
        Starship.all.each do |starship|
         puts starship.name
        end
+       menu
+       options
     end
    
     def new_planet
         planet = Planet.new
         puts "What is the planet called?"
         planet.name = gets.chomp
-        puts "Is the planet inhabited?"
-        puts "Input yes or no."
-        input = gets
-        if 
-            input == "yes"
-            planet.inhabited = true
-        else
-            planet.inhabited = false
-        end 
+        # puts "Is the planet inhabited?"
+        # puts "Input yes or no."
+        # input = gets
+        # if 
+        #     input == "yes"
+        #     planet.inhabited = true
+        # else
+        #     planet.inhabited = false
+        # end 
         planet.save
         puts "Thank you, planet #{planet.name} has been added to StarLogger "
+        menu
+        options
     end
 
     def new_ship
@@ -104,13 +110,14 @@ class CommandLineInterface
             puts "Please enter a whole number with no decimals."
             
         end
-
+        menu
+        options
     end
 
     def new_landing
         new_landing = Landing.new 
         puts "Please enter the name of the ship that is landing."
-        landing_ship_name = gets.chomp.to_s
+        landing_ship_name = gets.chomp.to_s.capitalize
         if Starship.exists?(name: landing_ship_name)==true
             landing_ship = Starship.find_by(name: landing_ship_name)
             new_landing.starship_id = landing_ship.id
@@ -131,59 +138,74 @@ class CommandLineInterface
             menu
             options
         end
-    end
+    end        
 
     def change_number_of_crew_on_ship
         puts "Please enter the name of the ship who's crew you would like to update."
-        name = gets.chomp.to_s
-        ship = Starship.find_by(name: name)
-        puts "Please enter the updated number of crew for starship #{ship.name}"
-        input = gets
-        if input =~ /^-?[0-9]+$/
-            ship.crew = input
-            ship.save
-            puts "Thank you, the number of crew for starship #{ship.name} has been updated to #{ship.crew} ."
+        name = gets.chomp.to_s                        
+        if Starship.exists?(name: name)==true
+            ship = Starship.find_by(name: name)
+            puts "Please enter the updated number of crew for starship #{ship.name}"
+            input = gets
+            if input =~ /^-?[0-9]+$/
+                ship.crew = input
+                ship.save
+                puts "Thank you, the number of crew for starship #{ship.name} has been updated to #{ship.crew} ."
+            else
+                puts "Please enter a whole number with no decimals."
+            end
         else
-            puts "Please enter a whole number with no decimals."
+            puts "The ship you entered does not exist in our records. You can view a list of ships in our records by entering 2 in the main menu."
         end
+        menu
+        options
     end
 
     def show_all_planets_a_ship_has_landed_on
         puts "Input the name of a ship to see which planets it has landed on."
-        name = gets.chomp.to_s
-         ship = Starship.find_by(name: name)
+        name = gets.chomp.to_s.capitalize
+        if Starship.exists?(name: name)==true
+            ship = Starship.find_by(name: name)
             ship.planets.each do |planet|
                 puts planet.name
             end
-
+        else puts "The ship you entered does not exist in our records. You can view a list of ships in our records by entering 2 in the main menu."
+        end
+        menu
+        options
     end
 
     def all_landings_on_a_planet
         puts "Input the name of a planet"
-
-        name = gets.chomp.to_s
-        planet = Planet.find_by(name: name)
-         planet.starships.each do |starship|
+        name = gets.chomp.to_s.capitalize
+        if Planet.exists?(name: name)==true
+            planet = Planet.find_by(name: name)
+            planet.starships.each do |starship|
             puts starship.name
+            end
          end
-        
+        menu
+        options
     end
 
     def delete_record_of_landing
         puts "Input the name the ship you want to delete a landing record for."
-        ship_name = gets.chomp.to_s
-         ship = Starship.find_by(name: ship_name) 
-         puts "Input the name of the planet where you want to erase landing records for Starship #{ship.name}. "
-         planet_name = gets.chomp.to_s
-         planet = Planet.find_by(name: planet_name)
-         puts planet
-        #  binding.pry
-        #  landing = Landing.where(id: 22)
-        #  puts landing.id
-         landing = Landing.where({starship_id: ship.id, planet_id: planet.id})
-        #  puts landing.id
-         landing[0].destroy
-         puts "You have deleted all records of #{ship.name} landing on #{planet.name}."
+        ship_name = gets.chomp.to_s.capitalize
+        if Starship.exists?(name: ship_name)==true
+            ship = Starship.find_by(name: ship_name) 
+            puts "Input the name of the planet where you want to erase landing records for Starship #{ship.name}. "
+            planet_name = gets.chomp.to_s.capitalize
+            if Planet.exists?(name: planet_name)==true
+                planet = Planet.find_by(name: planet_name)
+                landing = Landing.where({starship_id: ship.id, planet_id: planet.id})
+                landing[0].destroy
+                puts "You have deleted all records of #{ship.name} landing on #{planet.name}."
+            else
+                puts "The planet you entered doesn't exist in our records."
+            end
+        else puts "The ship you entered doesn't exist in our records."
+        end
+         #check double exit
          menu
          options
 
@@ -191,3 +213,4 @@ class CommandLineInterface
 
 
 end
+

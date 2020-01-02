@@ -1,7 +1,7 @@
 require 'faker'
 
 10.times do 
-    Planet.create(name: Faker::Space.unique.moon, inhabited: Faker::Boolean.boolean)
+    Planet.create(name: Faker::Space.unique.moon)
 end
 
 10.times do
