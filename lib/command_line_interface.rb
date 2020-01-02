@@ -46,7 +46,7 @@ class CommandLineInterface
                 show_all_planets_a_ship_has_landed_on
             when "8"
                 all_landings_on_a_planet
-            when "(9)"
+            when "9"
                 delete_record_of_landing
             when "10"
                 break
@@ -170,6 +170,22 @@ class CommandLineInterface
     end
 
     def delete_record_of_landing
+        puts "Input the name the ship you want to delete a landing record for."
+        ship_name = gets.chomp.to_s
+         ship = Starship.find_by(name: ship_name) 
+         puts "Input the name of the planet where you want to erase landing records for Starship #{ship.name}. "
+         planet_name = gets.chomp.to_s
+         planet = Planet.find_by(name: planet_name)
+         puts planet
+        #  binding.pry
+        #  landing = Landing.where(id: 22)
+        #  puts landing.id
+         landing = Landing.where({starship_id: ship.id, planet_id: planet.id})
+        #  puts landing.id
+         landing[0].destroy
+         puts "You have deleted all records of #{ship.name} landing on #{planet.name}."
+         menu
+         options
 
     end
 

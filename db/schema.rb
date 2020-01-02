@@ -19,7 +19,6 @@ ActiveRecord::Schema.define(version: 2019_12_30_233926) do
 
   create_table "planets", force: :cascade do |t|
     t.string "name"
-    t.boolean "inhabited"
   end
 
   create_table "starships", force: :cascade do |t|
