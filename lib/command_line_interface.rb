@@ -102,6 +102,7 @@ class CommandLineInterface
             puts "Thank you, starship #{ship.name} has been added to StarLogger"
         else 
             puts "Please enter a whole number with no decimals."
+            
         end
 
     end
@@ -109,16 +110,27 @@ class CommandLineInterface
     def new_landing
         new_landing = Landing.new 
         puts "Please enter the name of the ship that is landing."
-        
         landing_ship_name = gets.chomp.to_s
-        landing_ship = Starship.find_by(name: landing_ship_name)
-        new_landing.starship_id = landing_ship.id
-        puts "Please enter the name of the planet the ship is landing on."
-        planet_name = gets.chomp.to_s
-        planet = Planet.find_by(name: planet_name)
-        new_landing.planet_id = planet.id
-        new_landing.save
-        puts "You have recorded the landing of starship #{landing_ship.name} on planet #{planet.name}"
+        if Starship.exists?(name: landing_ship_name)==true
+            landing_ship = Starship.find_by(name: landing_ship_name)
+            new_landing.starship_id = landing_ship.id
+            puts "Please enter the name of the planet the ship is landing on."
+            planet_name = gets.chomp.to_s
+            if Planet.exists?(name: planet_name)==true
+                planet = Planet.find_by(name: planet_name)
+                new_landing.planet_id = planet.id
+                new_landing.save
+                puts "You have recorded the landing of starship #{landing_ship.name} on planet #{planet.name}"
+            else
+                puts "The planet name you entered does not exist in our records. You can view a list of planets in our records by entering 1 in the main menu."
+                menu
+                options
+            end
+        else
+            puts "The ship name you entered does not exist in our records. You can view a list of ships in our records by entering 2 in the main menu. "
+            menu
+            options
+        end
     end
 
     def change_number_of_crew_on_ship
