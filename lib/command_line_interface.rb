@@ -161,7 +161,7 @@ class CommandLineInterface
 
     def change_number_of_crew_on_ship
         puts "Please enter the name of the ship who's crew you would like to update."
-        name = gets.chomp.to_s                        
+        name = gets.chomp.to_s.capitalize                       
         if Starship.exists?(name: name)==true
             ship = Starship.find_by(name: name)
             puts "Please enter the updated number of crew for starship #{ship.name}"
